@@ -1,10 +1,11 @@
 import { onSnake, expandSnake, SNAKE_SPEED, speedUpSnake, slowDownSnake } from './snake.js'
 import { randomGridPosition } from './grid.js'
+// import { gameOver } from './game.js'
 
+export let score = 0
 let food = getRandomFoodPosition()
 let speedFood = getRandomFoodPosition()
-let timer = 3
-export let score = 0
+export let block = getRandomFoodPosition()
 const EXPANSION_RATE = 5
 
 export function update() {
@@ -16,13 +17,17 @@ export function update() {
 
     if (onSnake(speedFood)) {
         let timeInterval = setTimeout(slowDownSnake, 3000)
-        
+
         speedUpSnake()
         speedFood = getRandomFoodPosition()
         score = (score + 2)
        
         console.log(timeInterval)
     }
+
+    // if (onSnake(block)) {
+    //     return gameOver
+    // }
 }
 
 export function draw(gameBoard) {
@@ -38,10 +43,16 @@ export function draw(gameBoard) {
     speedElement.classList.add('food-speed')
     gameBoard.appendChild(speedElement)
 
+    const blockElement = document.createElement('div')
+    blockElement.style.gridRowStart = block.y
+    blockElement.style.gridColumnStart = block.x
+    blockElement.classList.add('obstacle')
+    gameBoard.appendChild(blockElement)
+
     console.log('draw food')
 }
 
-function getRandomFoodPosition() {
+export function getRandomFoodPosition() {
     let newFoodPosition
 
     while (newFoodPosition == null || onSnake(newFoodPosition)) {
@@ -49,3 +60,7 @@ function getRandomFoodPosition() {
     }
     return newFoodPosition
 }
+
+// function obstacleHit() {
+
+// }
